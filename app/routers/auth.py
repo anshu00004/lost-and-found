@@ -65,7 +65,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
             detail="Incorrect email or password",
         )
 
-    access_token = create_access_token(str(user.id))
+    access_token = create_access_token(str(user.id), role=user.role)
     
     return {
         "access_token": access_token,
