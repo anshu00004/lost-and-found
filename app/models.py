@@ -10,6 +10,7 @@ Tables:
 """
 import enum
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy import (
     Boolean, Column, DateTime, Enum, ForeignKey,
@@ -156,6 +157,14 @@ class Claim(Base):
     
     # FIX HERE: reviewed_by ki jagah reviewed_by_id kar diya hai
     reviewer = relationship("User", foreign_keys=[reviewed_by_id])
+
+    @property
+    def reviewed_by(self) -> Optional[int]:
+        return self.reviewed_by_id
+
+    @reviewed_by.setter
+    def reviewed_by(self, value: Optional[int]):
+        self.reviewed_by_id = value
 
     def __repr__(self) -> str:
         return f"<Claim id={self.id} status={self.status}>"

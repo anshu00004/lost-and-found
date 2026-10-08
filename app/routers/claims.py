@@ -98,6 +98,7 @@ def submit_claim(
         )
 
     claim = models.Claim(
+        user_id=current_user.id,
         lost_item_id=payload.lost_item_id,
         found_item_id=payload.found_item_id,
         claimant_id=current_user.id,
@@ -205,9 +206,15 @@ def review_claim(
             detail=f"Claim is already '{claim.status}' and cannot be reviewed again.",
         )
 
+    if payload.status not in (models.ClaimStatus.APPROVED, models.ClaimStatus.REJECTED):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Review status must be either 'approved' or 'rejected'.",
+        )
+
     claim.status = payload.status
     claim.admin_notes = payload.admin_notes
-    claim.reviewed_by = admin.id
+    claim.reviewed_by_id = admin.id
     claim.reviewed_at = datetime.now(timezone.utc)
 
     if payload.status == models.ClaimStatus.APPROVED:

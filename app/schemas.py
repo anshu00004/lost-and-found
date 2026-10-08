@@ -125,13 +125,13 @@ class LostItemResponse(BaseModel):
     date_lost: datetime
     location_lost: str
     reward_offered: bool
-    reward_amount: Optional[str]
-    image_url: Optional[str]
+    reward_amount: Optional[str] = None
+    image_url: Optional[str] = None
     status: ItemStatus
     reporter_id: int
     reporter: UserResponse
     created_at: datetime
-    updated_at: Optional[datetime]
+    updated_at: Optional[datetime] = None
 
     model_config = {"from_attributes": True}
 
@@ -144,7 +144,7 @@ class LostItemSummary(BaseModel):
     date_lost: datetime
     status: ItemStatus
     reward_offered: bool
-    image_url: Optional[str]
+    image_url: Optional[str] = None
     created_at: datetime
 
     model_config = {"from_attributes": True}
@@ -182,13 +182,13 @@ class FoundItemResponse(BaseModel):
     category: Category
     date_found: datetime
     location_found: str
-    storage_location: Optional[str]
-    image_url: Optional[str]
+    storage_location: Optional[str] = None
+    image_url: Optional[str] = None
     status: ItemStatus
     reporter_id: int
     reporter: UserResponse
     created_at: datetime
-    updated_at: Optional[datetime]
+    updated_at: Optional[datetime] = None
 
     model_config = {"from_attributes": True}
 
@@ -200,7 +200,7 @@ class FoundItemSummary(BaseModel):
     location_found: str
     date_found: datetime
     status: ItemStatus
-    image_url: Optional[str]
+    image_url: Optional[str] = None
     created_at: datetime
 
     model_config = {"from_attributes": True}
@@ -224,17 +224,19 @@ class ClaimReview(BaseModel):
 
 class ClaimResponse(BaseModel):
     id: int
+    user_id: Optional[int] = None
     lost_item_id: int
     found_item_id: int
     claimant_id: int
     proof_description: str
-    proof_image_url: Optional[str]
+    proof_image_url: Optional[str] = None
     status: ClaimStatus
-    admin_notes: Optional[str]
-    reviewed_by: Optional[int]
-    reviewed_at: Optional[datetime]
+    admin_notes: Optional[str] = None
+    reviewed_by_id: Optional[int] = None
+    reviewed_by: Optional[int] = None
+    reviewed_at: Optional[datetime] = None
     created_at: datetime
-    updated_at: Optional[datetime]
+    updated_at: Optional[datetime] = None
 
     # Nested
     lost_item: LostItemSummary
