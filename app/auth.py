@@ -4,6 +4,7 @@ and FastAPI dependency for extracting the current user.
 """
 from datetime import datetime, timedelta, timezone
 from typing import Optional
+import uuid
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -55,7 +56,7 @@ def create_access_token(user_id: int, role: str) -> str:
 
 def create_refresh_token(user_id: int) -> str:
     return _create_token(
-        {"sub": str(user_id), "type": "refresh"},
+        {"sub": str(user_id), "type": "refresh", "jti": str(uuid.uuid4())},
         timedelta(days=settings.refresh_token_expire_days),
     )
 
